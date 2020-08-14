@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script> -->
+    <!-- <script src="WebMIDIAPI.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/webmidi"></script>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p id="demo"></p>
+
+    <script>
+        WebMidi.enable(function (err) {
+
+            if (err) {
+              document.getElementById('demo').innerHTML="This browser not supports WebMIDI!";
+            } else {
+              document.getElementById('demo').innerHTML="This browser supports WebMIDI!";
+            }
+
+        });
+
+
+
+
+      // navigator.requestMIDIAccess({sysex : false}).then(onMIDISuccess, onMIDIFailure);
+      //
+      // function onMIDISuccess(midiAccess) {
+      //   console.log(midiAccess);
+      //   var inputs = midiAccess.inputs;
+      //   var outputs = midiAccess.outputs;
+      //   document.getElementById('demo').innerHTML="This browser supports WebMIDI!";
+      // }
+      //
+      // function onMIDIFailure(err) {
+      //   document.getElementById('demo').innerHTML='This browser not supports WebMIDI!'+err.name;
+      // }
+
+
+
+      // if (navigator.requestMIDIAccess) {
+      //    document.getElementById('demo').innerHTML='This browser supports WebMIDI!';
+      // } else {
+      //    document.getElementById('demo').innerHTML='This browser not supports WebMIDI!';
+      // }
+
+    </script>
+  </body>
+
+</html>
