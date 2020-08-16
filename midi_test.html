@@ -10,6 +10,7 @@
   <body>
     <p id="demo"></p></b>
     <p id="demo2"></p></b>
+    <p id="demo3"></p></b>
     <input type="number" id="myNumber" value="0" min="0" max="1">
 
     <script>
@@ -20,33 +21,20 @@
             } else {
               document.getElementById('demo').innerHTML="This browser supports WebMIDI!";
             }
+            console.log(WebMidi.inputs);
+            var range = document.getElementById('myNumber').value;
+            document.getElementById('demo2').innerHTML=WebMidi.inputs[range].name;
+
+            var input = WebMidi.inputs[range];
+            input.addListener('noteon', "all", function(e) {
+              document.getElementById('demo2').innerHTML="Pitch value: " + e.value;
+            });
+
 
         });
-        var range = document.getElementById('myNumber').value;
-        document.getElementById('demo2').innerHTML=WebMidi.inputs[range].name;
 
 
 
-      // navigator.requestMIDIAccess({sysex : false}).then(onMIDISuccess, onMIDIFailure);
-      //
-      // function onMIDISuccess(midiAccess) {
-      //   console.log(midiAccess);
-      //   var inputs = midiAccess.inputs;
-      //   var outputs = midiAccess.outputs;
-      //   document.getElementById('demo').innerHTML="This browser supports WebMIDI!";
-      // }
-      //
-      // function onMIDIFailure(err) {
-      //   document.getElementById('demo').innerHTML='This browser not supports WebMIDI!'+err.name;
-      // }
-
-
-
-      // if (navigator.requestMIDIAccess) {
-      //    document.getElementById('demo').innerHTML='This browser supports WebMIDI!';
-      // } else {
-      //    document.getElementById('demo').innerHTML='This browser not supports WebMIDI!';
-      // }
 
     </script>
   </body>
