@@ -23,9 +23,9 @@
             }
             console.log(WebMidi.inputs);
             var range = document.getElementById('myNumber').value;
-            document.getElementById('demo2').innerHTML=WebMidi.inputs[range].name;
+            document.getElementById('demo2').innerHTML=WebMidi.inputs[1].name;
 
-            var input = WebMidi.inputs[range];
+            var input = WebMidi.inputs[1];
             input.addListener('noteon', "all", function(e) {
               document.getElementById('demo2').innerHTML="Pitch value: " + e.value;
             });
