@@ -8,7 +8,9 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p id="demo"></p>
+    <p id="demo"></p></b>
+    <p id="demo2"></p></b>
+    <input type="number" id="myNumber" value="0" min="0" max="1">
 
     <script>
         WebMidi.enable(function (err) {
@@ -20,7 +22,8 @@
             }
 
         });
-
+        var range = document.getElementById('myNumber').value;
+        document.getElementById('demo2').innerHTML=WebMidi.inputs[range].name;
 
 
 
