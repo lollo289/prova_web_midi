@@ -27,7 +27,7 @@
 
             var input = WebMidi.inputs[1];
             input.addListener('noteon', "all", function(e) {
-              document.getElementById('demo2').innerHTML="Pitch value: " + e.value;
+              document.getElementById('demo2').innerHTML="Pitch value: " + e.note.name;
             });
 
 
