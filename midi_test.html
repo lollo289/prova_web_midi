@@ -1,42 +1,180 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script> -->
-    <!-- <script src="WebMIDIAPI.min.js"></script> -->
+    <style>
+
+        .myDiv {
+          height: 1000px;
+          width: 1500px;
+          border: 1px outset red;
+          background-color: white;
+          text-align: center;
+        }
+
+        .largecheck {
+            width: 40px;
+            height: 40px;
+        }
+
+        label {
+          font-size: 40px;
+          margin-right: 50px;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webmidi"></script>
+    <script src="constants.js"></script>
+    <script src="classi.js"></script>
     <meta charset="utf-8" />
   </head>
   <body>
+    <div id="miodiv" class="myDiv">
+    </div>
+    <div>
+    <!-- Creazione dell'interfaccia grafica -->
+    <input type="checkbox" id="C" name="C" class="largecheck" checked="true">
+    <label for="C" class="label">C</label>
+
+    <input type="checkbox" id="C#" name="C#" class="largecheck">
+    <label for="C">C#</label>
+
+    <input type="checkbox" id="D" name="D" class="largecheck">
+    <label for="D">D</label>
+
+    <input type="checkbox" id="D#" name="D#" class="largecheck">
+    <label for="D#">D#</label>
+
+    <input type="checkbox" id="E" name="E" class="largecheck">
+    <label for="E">E</label>
+
+    <input type="checkbox" id="F" name="F" class="largecheck">
+    <label for="F">F</label>
+
+    <input type="checkbox" id="F#" name="F#" class="largecheck">
+    <label for="F#">F#</label>
+
+    <input type="checkbox" id="G" name="G" class="largecheck">
+    <label for="G">G</label>
+
+    <input type="checkbox" id="G#" name="G#" class="largecheck">
+    <label for="G#">G#</label>
+
+    <input type="checkbox" id="A" name="A" class="largecheck">
+    <label for="A">A</label>
+
+    <input type="checkbox" id="A#" name="A#" class="largecheck">
+    <label for="A#">A#</label>
+
+    <input type="checkbox" id="B" name="B" class="largecheck">
+    <label for="B">B</label>
+
+    <input type="checkbox" id="Bb" name="Bb" class="largecheck">
+    <label for="Bb">Bb</label>
+
+    <input type="checkbox" id="Eb" name="Eb" class="largecheck">
+    <label for="Eb">Eb</label>
+
+    <input type="checkbox" id="Ab" name="Ab" class="largecheck">
+    <label for="Ab">Ab</label>
+
+    </div>
+
+    <div>
+    <input type="checkbox" id="mag" name="mag" class="largecheck" checked="true">
+    <label for="mag" class="label">Mag</label>
+
+    <input type="checkbox" id="mag1" name="mag1" class="largecheck">
+    <label for="mag1">Mag 1° inversion</label>
+
+    <input type="checkbox" id="mag2" name="mag2" class="largecheck">
+    <label for="mag2">Mag 2° inversion</label>
+
+    <input type="checkbox" id="min" name="min" class="largecheck">
+    <label for="min">Min</label>
+
+    <input type="checkbox" id="dom7" name="dom7" class="largecheck">
+    <label for="dom7">Dom7</label>
+
+    </div>
+
+
+
     <p id="demo"></p></b>
     <p id="demo2"></p></b>
     <p id="demo3"></p></b>
-    <input type="number" id="myNumber" value="0" min="0" max="1">
-
+    <p id="demo4"></p></b>
+    <button type="button" id="myBtn" onclick="penta.calculate_notes(4,4,20)">Go</button>
+    <button type="button" id="shift" onclick="shift_press()">shift</button>
+    <input type="text" id="minoct" value="4"></b>
+    <input type="text" id="maxoct" value="4">
     <script>
-        WebMidi.enable(function (err) {
+        //Inizializzazione variabili
+        var penta = new pentagram(100,200);
+        // var min_oct = parseInt(document.getElementById('minoct').value);
+        // var max_oct = parseInt(document.getElementById('maxoct').value);
 
-            if (err) {
-              document.getElementById('demo').innerHTML="This browser not supports WebMIDI!";
-            } else {
-              document.getElementById('demo').innerHTML="This browser supports WebMIDI!";
-            }
-            console.log(WebMidi.inputs);
-            var range = document.getElementById('myNumber').value;
-            document.getElementById('demo2').innerHTML=WebMidi.inputs[1].name;
-
-            var input = WebMidi.inputs[1];
-            input.addListener('noteon', "all", function(e) {
-              document.getElementById('demo2').innerHTML="Pitch value: " + e.note.name;
-            });
+        var pressed_notes = [];
 
 
-        });
+        function setup(){
+
+          // var width = document.getElementById('miodiv').offsetWidth
+          // var heigth = document.getElementById('miodiv').offsetHeigth
+          var cnv=createCanvas(1000, 500);
+          cnv.parent("miodiv");
+          //cnv.position(0,0,'sticky')
+          NOTE_COLOR = color(0, 0, 0);
+          BACKGROUND_COLOR = color(175, 255, 255);
+          PENT_LENGTH = windowWidth - 200;
+
+          penta.calculate_notes(4,4,20);
+
+          //Attivazione WebMidi
+          WebMidi.enable(function (err) {
+              document.getElementById('demo2').innerHTML = WebMidi.inputs[0].name;
+              //Creazione oggetto di input midi
+              var input = WebMidi.inputs[0];
+              input.addListener('noteon', 'all', function(e){
+                //Salva in pressed_notes quale nota è stata premuta
+                pressed_notes.push(e.note.name + e.note.octave.toString());
+              });
+              //Creazione oggetto di output
+              input.addListener('noteoff', 'all', function(e){
+                //Rimuove da pressed_notes la nota che è stata rilasciata
+                for (var i=0; i<pressed_notes.length; i++){
+                  if(pressed_notes[i] == (e.note.name + e.note.octave.toString())){
+                    pressed_notes.splice(i,1);
+                  }
+                }
+              });
+          });
+
+        }//FINE SETUP
+
+        function draw(){
+          //Refresh sfondo
+          background(BACKGROUND_COLOR);
+          //Disegnare il pentagramma
+          penta.draw_pentagram();
+          //Disegnare le note
+          penta.draw_notes();
+          //Controlla se è stata premuta una nota o accordo che c'è a schermo
+          if(compare(pressed_notes,penta.accordi[0].notes)){
+            //Se sono stata premute le note giuste togli le note da schermo e sposta le altre in avanti
+            penta.shift_notes();
+          }
+        }//FINE DRAW
+
+        function shift_press(){
+          penta.shift_notes();
+        }
 
 
 
 
     </script>
-  </body>
 
+  </body>
 </html>
