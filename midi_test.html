@@ -105,13 +105,13 @@
     <p id="demo2"></p></b>
     <p id="demo3"></p></b>
     <p id="demo4"></p></b>
-    <button type="button" id="myBtn" onclick="penta.calculate_notes(4,4,20)">Go</button>
+    <button type="button" id="myBtn" onclick="penta.calculate_notes(2,2,50)">Go</button>
     <button type="button" id="shift" onclick="shift_press()">shift</button>
     <input type="text" id="minoct" value="4"></b>
     <input type="text" id="maxoct" value="4">
     <script>
         //Inizializzazione variabili
-        var penta = new pentagram(100,200);
+        var penta = new pentagram(100,200,'bass');
         // var min_oct = parseInt(document.getElementById('minoct').value);
         // var max_oct = parseInt(document.getElementById('maxoct').value);
 
@@ -122,14 +122,14 @@
 
           // var width = document.getElementById('miodiv').offsetWidth
           // var heigth = document.getElementById('miodiv').offsetHeigth
-          var cnv=createCanvas(1000, 500);
+          var cnv=createCanvas(1500, 1000);
           cnv.parent("miodiv");
-          //cnv.position(0,0,'sticky')
+          cnv.position(0,0);
           NOTE_COLOR = color(0, 0, 0);
           BACKGROUND_COLOR = color(175, 255, 255);
-          PENT_LENGTH = windowWidth - 200;
+          PENT_LENGTH = 1600;
 
-          penta.calculate_notes(4,4,20);
+          penta.calculate_notes(2,2,50);
 
           //Attivazione WebMidi
           WebMidi.enable(function (err) {

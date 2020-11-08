@@ -9,7 +9,7 @@ var BACKGROUND_COLOR;
 var CANVAS_HEIGTH = 600;
 var CANVAS_WIDTH = 600;
 var PENT_SPACING = 15;
-var PENT_DIVISION = 10;
+var PENT_DIVISION = 15;
 var PENT_LENGTH;
 var FPS = 24;
 var ADD_CUT_LENGHT = 15;
@@ -105,11 +105,29 @@ class pentagram{
       for (var j=0;j<this.accordi[i].notes.length;j++){
         this.accordi[i].notes[j].draw_note();
         //tagli addizionali
-        if(this.accordi[i].notes[j].y<this.y || this.accordi[i].notes[j]>this.y){
-          line(this.accordi[i].notes[j].x - ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y, this.accordi[i].notes[j].x + ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y);
+        if(this.accordi[i].notes[j].y>this.y + PENT_SPACING*4 + PENT_SPACING/2){
+          for(var z=0; z<(this.accordi[i].notes[j].y-(this.y+PENT_SPACING*4))/PENT_SPACING; z++){
+            line(this.accordi[i].notes[j].x - ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y-z*PENT_SPACING, this.accordi[i].notes[j].x + ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y-z*PENT_SPACING);
+          }
         }
+
+        // if(this.accordi[i].notes[j].y>this.y + PENT_SPACING*4 || this.accordi[i].notes[j].y<this.y){
+        //   line(this.accordi[i].notes[j].x - ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y, this.accordi[i].notes[j].x + ADD_CUT_LENGHT/2, this.accordi[i].notes[j].y);
+        // }
       }
     }
+    //nome accordo sopra
+    var note_name;
+    for (i=0;i<this.accordi.length;i++){
+      if(this.accordi[i].tonic.length == 3){
+        note_name = this.accordi[i].tonic.slice(0,2);
+      }else{
+        note_name = this.accordi[i].tonic.slice(0,1);
+      }
+      textSize(20);
+      text(note_name + this.accordi[i].type,this.accordi[i].notes[0].x,this.y-70);
+    }
+
   }
 
   shift_notes(){
@@ -117,7 +135,7 @@ class pentagram{
     this.accordi.shift();
     for (var i=0;i<this.accordi.length;i++){
       for (var j=0;j<this.accordi[i].notes.length;j++){
-        this.accordi[i].notes[j].x = this.accordi[i].notes[j].x - PENT_LENGTH/6;
+        this.accordi[i].notes[j].x = this.accordi[i].notes[j].x - PENT_LENGTH/PENT_DIVISION;
       }
     }
   }
